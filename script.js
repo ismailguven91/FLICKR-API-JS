@@ -1,21 +1,17 @@
-// - Ett sökfält där användaren får ange ett sökord.
-// - Alla error ska hanteras med ett användarvänligt meddelande till användaren på webbsidan.
-// - Den första bilden i sökresultatet ska visas i en img-tagg - Endast en bild i taget ska visas. Görs en ny sökning ska bilden från den gamla sökningen tas bort.
-
-
 const KEY = "0ac7e90073e329a5810febb98baf950c";
-
 
 const btn = document.querySelector('button');
 console.log(btn);
 
 btn.addEventListener( 'click', function(event){
+    
     let userInput = document.querySelector('input');
     let userNumbInput = document.getElementById("myNumbInput");
+    let findSize = document.getElementById("size");
 
+    console.log(findSize.value);
     console.log(userInput.value);
     console.log(userNumbInput.value);
-
 
 
     const url = `https://www.flickr.com/services/rest/?api_key=${KEY}&method=flickr.photos.search&text=${userInput.value}&format=json&nojsoncallback=1&per_page=${userNumbInput.value}&page=1&sort=relevance
@@ -40,7 +36,7 @@ fetch(url).then(
         console.log(data);
         console.log(data.photos.photo);
         //Vi hämtar första bilden
-        getImageUrl(data.photos.photo);
+        getImageUrl(data.photos.photo,findSize.value);
 
     }
 ).catch(
@@ -52,9 +48,9 @@ fetch(url).then(
 })
 
 //här ska vi pussla ihop bild-urlen
-function getImageUrl(photoObject){
+function getImageUrl(photoObject,s){
     let photo = photoObject;
-    let size = 'z';
+    let size = s;
 
     console.log(photo);
 
@@ -85,3 +81,5 @@ function clearImages(){
         img.remove();
     }
 }
+
+
