@@ -5,18 +5,20 @@
 
 const KEY = "0ac7e90073e329a5810febb98baf950c";
 
-const userInput = document.querySelectorAll("input")
 
 const btn = document.querySelector('button');
 console.log(btn);
 
-//Hämtar datan (sökord och antal) från användaren.
 btn.addEventListener( 'click', function(event){
     let userInput = document.querySelector('input');
+    let userNumbInput = document.getElementById("myNumbInput");
+
     console.log(userInput.value);
+    console.log(userNumbInput.value);
 
 
-    const url = `https://www.flickr.com/services/rest/?api_key=${KEY}&method=flickr.photos.search&text=${userInput.value}&format=json&nojsoncallback=1&per_page=1&page=1&sort=relevance
+
+    const url = `https://www.flickr.com/services/rest/?api_key=${KEY}&method=flickr.photos.search&text=${userInput.value}&format=json&nojsoncallback=1&per_page=${userNumbInput.value}&page=1&sort=relevance
     `;
 
 
@@ -36,13 +38,15 @@ fetch(url).then(
 ).then(
     function(data){
         console.log(data);
+        console.log(data.photos.photo);
         //Vi hämtar första bilden
-        getImageUrl(data.photos.photo[0]);
+        getImageUrl(data.photos.photo);
+
     }
 ).catch(
     function(error){
         console.log(error);
-        alert("We could not match your serch. Please try something else.");
+        alert("We couldn't match your serch. Please try something else.");
     }
 );
 })
@@ -52,12 +56,16 @@ function getImageUrl(photoObject){
     let photo = photoObject;
     let size = 'z';
 
-    let imgUrl = `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_${size}.jpg`;
+    console.log(photo);
 
-    // console.log(imgUrl);
     clearImages();
 
-    displayImg(imgUrl);
+    for (let i =0; i < photo.length; i++ ){
+
+        let imgUrl = `https://live.staticflickr.com/${photo[i].server}/${photo[i].id}_${photo[i].secret}_${size}.jpg`;
+
+        displayImg(imgUrl);
+    }
 }
 
 //för att visa bilden
